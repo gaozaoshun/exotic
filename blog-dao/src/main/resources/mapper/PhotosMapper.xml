@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.blog.dao.PhotosMapper" >
+  <resultMap id="BaseResultMap" type="org.blog.model.Photos" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="lv" property="lv" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="INTEGER" />
+    <result column="dr" property="dr" jdbcType="INTEGER" />
+    <result column="ts" property="ts" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, url, lv, create_time, create_user, dr, ts
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select 
+    <include refid="Base_Column_List" />
+    from photos
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="count" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select COUNT(*)
+    from photos
+    where dr = #{dr}
+  </select>
+    <select id="query" resultMap="BaseResultMap">
+        select *
+        from photos
+        where ifnull(dr,0) = #{dr}
+        <if test="name!=null and name!=''">
+          AND  name LIKE '%${name}%'
+        </if>
+        order by
+        <if test="field==4">
+            lv
+        </if>
+        <if test="field==3">
+            create_time
+        </if>
+        <if test="field==5">
+            ts
+        </if>
+        <if test="order==1">
+            DESC
+        </if>
+        <if test="order==0">
+            ASC
+        </if>
+        limit #{page},#{rows}
+    </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from photos
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from photos
+    where id IN
+    <foreach collection="ids" item="id" index="" separator="," close=")" open="(">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="org.blog.model.Photos" >
+    insert into photos (id, name, url, 
+      lv, create_time, create_user, 
+      dr, ts)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{lv,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, 
+      #{dr,jdbcType=INTEGER}, #{ts,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="add" parameterType="org.blog.model.Photos" >
+    insert into photos (name, url,
+      lv, create_time, create_user,
+      dr, ts)
+    values (#{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
+      #{lv,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER},
+      #{dr,jdbcType=INTEGER}, #{ts,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.blog.model.Photos" >
+    insert into photos
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="lv != null" >
+        lv,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="dr != null" >
+        dr,
+      </if>
+      <if test="ts != null" >
+        ts,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="lv != null" >
+        #{lv,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="dr != null" >
+        #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        #{ts,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.blog.model.Photos" >
+    update photos
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="lv != null" >
+        lv = #{lv,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="dr != null" >
+        dr = #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        ts = #{ts,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.blog.model.Photos" >
+    update photos
+    set name = #{name,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      lv = #{lv,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=INTEGER},
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="modify" parameterType="org.blog.model.Photos">
+    update photos
+    set name = #{name,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      lv = #{lv,jdbcType=INTEGER},
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateDr">
+    update photos
+    set
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=TIMESTAMP}
+    where id IN
+    <foreach collection="ids" open="(" close=")" separator="," index="" item="id">
+      #{id}
+    </foreach>
+  </update>
+</mapper>

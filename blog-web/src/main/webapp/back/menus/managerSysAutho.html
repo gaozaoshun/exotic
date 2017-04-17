@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html style="width: 100%;height: 100%">
+	<head>
+		<meta charset="UTF-8">
+		<title>Table</title>
+		<link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../css/global.css" media="all">
+		<link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="../css/table.css" />
+	</head>
+	<body  style="width: 100%;height: 97%">
+		<div class="admin-main" style="width: 98%;height: 93%">
+			<fieldset class="layui-elem-field">
+				<div class="layui-field-box">
+					<a id="addBtn" href="#" class="layui-btn layui-btn-small">
+						<i class="layui-icon">&#xe61f;</i> 添加
+					</a>
+                    <a id="editBtn" href="#" class="layui-btn layui-btn-small">
+						<i class="layui-icon">&#xe642;</i> 编辑
+					</a>
+					<a id="delBtn" href="#" class="layui-btn layui-btn-small">
+						<i class="layui-icon">&#xe640;</i> 删除
+					</a>
+                    <a id="updateBtn" href="#" class="layui-btn layui-btn-small  layui-btn-warm">
+						<i class="layui-icon">&#xe640;</i> 更新启用
+					</a>
+				</div>
+			</fieldset>
+			<fieldset class="layui-elem-field"  style="background:#f7f7f7;float:left;width: 16%;height: 90%;overflow: auto">
+				<div class="layui-field-box" id="tree">
+				</div>
+			</fieldset>
+			<fieldset class="layui-elem-field"  style="background:#f7f7f7;float:left;width: 81.2%;height: 90%;overflow: auto;margin-left: 8px">
+				<div class="layui-field-box">
+                    <table class="layui-table" lay-skin="row">
+                        <colgroup>
+                            <col width="10">
+                            <col width="10">
+                            <col width="87">
+                            <col width="45">
+                            <col width="87">
+                            <col>
+                            <col width="87">
+                            <col width="110">
+                            <col width="75">
+                            <col width="110">
+                            <col width="60">
+                            <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selected-all"></th>
+                            <th>ID</th>
+                            <th>权限名称</th>
+                            <th>图标</th>
+                            <th>URI</th>
+                            <th>描述</th>
+                            <th>对应菜单</th>
+                            <th>创建时间</th>
+                            <th>创建人</th>
+                            <th>更新时间</th>
+                            <th>启用</th>
+                        </tr>
+                        </thead>
+                        <tbody id="autho-tbody">
+
+                        </tbody>
+                    </table>
+                </div>
+			</fieldset>
+		</div>
+		<script type="text/javascript" src="../plugins/layui/layui.js"></script>
+		<script type="text/javascript" src="../js/managerSysAutho.js"></script>
+	</body>
+</html>

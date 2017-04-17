@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.admin.dao.SysAuthoMapper" >
+  <resultMap id="BaseResultMap" type="org.admin.model.SysAutho" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="uri" property="uri" jdbcType="VARCHAR" />
+    <result column="descp" property="descp" jdbcType="VARCHAR" />
+    <result column="menu_id" property="menuId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="INTEGER" />
+    <result column="dr" property="dr" jdbcType="INTEGER" />
+    <result column="ts" property="ts" jdbcType="TIMESTAMP" />
+    <association column="create_user" property="sysUser" javaType="org.admin.model.SysUser" select="queryBySysUser"/>
+    <association column="menu_id" property="sysMenu" javaType="org.admin.model.SysMenu" select="queryBySysMenu"/>
+  </resultMap>
+  <resultMap id="SysUserResultMap" type="org.admin.model.SysUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="headimg" property="headimg" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="dr" property="dr" jdbcType="INTEGER" />
+    <result column="ts" property="ts" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="SysMenuResultMap" type="org.admin.model.SysMenu" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="descp" property="descp" jdbcType="VARCHAR" />
+    <result column="super_id" property="superId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="INTEGER" />
+    <result column="dr" property="dr" jdbcType="INTEGER" />
+    <result column="ts" property="ts" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <select id="queryBySysMenu" resultMap="SysMenuResultMap" parameterType="java.lang.Integer">
+    SELECT *
+    FROM sys_menu
+    WHERE id = #{id}
+  </select>
+  <select id="queryBySysUser" resultMap="SysUserResultMap" parameterType="java.lang.Integer">
+    SELECT *
+    FROM sys_user
+    WHERE id = #{id}
+  </select>
+  <sql id="Base_Column_List" >
+    id, name, icon, uri, descp, menu_id, create_time, create_user, dr, ts
+  </sql>
+  <select id="queryByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT
+    sa.id AS id, sa.name AS name, sa.icon AS icon, sa.uri AS uri, sa.descp AS descp, sa.menu_id AS menu_id, sa.create_time AS create_time, sa.create_user AS create_user, sa.dr AS dr, sa.ts AS ts
+    FROM sys_role_autho sra
+    LEFT JOIN sys_autho sa
+    ON sra.autho_id = sa.id
+    WHERE sra.role_id = #{id}
+    <if test="page!=null and rows!=null">
+      limit #{page},#{rows}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_autho
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="queryByUserId" resultMap="BaseResultMap">
+    SELECT a.id as id,a.name as name,a.icon as icon,a.uri as uri,
+    a.descp as 'descp',a.create_time as create_time,
+    a.create_user as create_user,a.dr as dr,a.menu_id as menu_id,a.ts as ts
+    FROM sys_autho a
+    RIGHT JOIN sys_role_autho ra
+    ON a.id = ra.autho_id
+    WHERE a.dr = #{dr}
+    and ra.role_id IN
+    (SELECT r.id
+    FROM sys_role r
+    RIGHT JOIN sys_user_role ur
+    ON r.id = ur.role_id
+    WHERE ur.user_id=#{userId})
+  </select>
+  <select id="query" resultMap="BaseResultMap">
+    SELECT *
+    FROM sys_autho
+    where 1=1
+    <if test="q!=null and q!=''">
+      AND name LIKE '%${q}%'
+    </if>
+    <if test="id!=null">
+      AND id = #{id}
+    </if>
+    <if test="dr!=null">
+      AND dr = #{dr}
+    </if>
+    <if test="menuId!=null">
+      and menu_id = #{menuId}
+    </if>
+    order by
+    <if test="field==3">
+      create_time
+    </if>
+    <if test="field==5">
+      ts
+    </if>
+    <if test="order==1">
+      desc
+    </if>
+    <if test="order==0">
+      ASC
+    </if>
+    <if test="page!=null and rows!=null">
+      limit #{page},#{rows}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_autho
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from sys_autho
+    where id IN
+    <foreach collection="ids" item="id" index="" separator="," close=")" open="(">
+      #{id}
+    </foreach>
+  </delete>
+  <delete id="deleteRoleAutho" parameterType="java.lang.Integer">
+    delete from sys_role_autho
+    where autho_id IN
+    <foreach collection="ids" item="id" index="" separator="," close=")" open="(">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="org.admin.model.SysAutho" >
+    insert into sys_autho (name, icon,
+      uri, descp, menu_id,
+      create_time, create_user, dr, 
+      ts)
+    values (#{name,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR},
+      #{uri,jdbcType=VARCHAR}, #{descp,jdbcType=VARCHAR}, #{menuId,jdbcType=INTEGER},
+      #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{dr,jdbcType=INTEGER}, 
+      #{ts,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.admin.model.SysAutho" >
+    insert into sys_autho
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="uri != null" >
+        uri,
+      </if>
+      <if test="descp != null" >
+        descp,
+      </if>
+      <if test="menuId != null" >
+        menu_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="dr != null" >
+        dr,
+      </if>
+      <if test="ts != null" >
+        ts,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="uri != null" >
+        #{uri,jdbcType=VARCHAR},
+      </if>
+      <if test="descp != null" >
+        #{descp,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null" >
+        #{menuId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="dr != null" >
+        #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        #{ts,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.admin.model.SysAutho" >
+    update sys_autho
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="uri != null" >
+        uri = #{uri,jdbcType=VARCHAR},
+      </if>
+      <if test="descp != null" >
+        descp = #{descp,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null" >
+        menu_id = #{menuId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="dr != null" >
+        dr = #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        ts = #{ts,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.admin.model.SysAutho" >
+    update sys_autho
+    set name = #{name,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      uri = #{uri,jdbcType=VARCHAR},
+      descp = #{descp,jdbcType=VARCHAR},
+      menu_id = #{menuId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=INTEGER},
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="modify" parameterType="org.admin.model.SysAutho" >
+    update sys_autho
+    set name = #{name,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      uri = #{uri,jdbcType=VARCHAR},
+      descp = #{descp,jdbcType=VARCHAR},
+      menu_id = #{menuId,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateDr">
+    update sys_autho
+    set
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=TIMESTAMP}
+    where id = #{id}
+  </update>
+</mapper>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.blog.dao.FriendlinkMapper" >
+  <resultMap id="BaseResultMap" type="org.blog.model.Friendlink" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="descp" property="descp" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="lv" property="lv" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="INTEGER" />
+    <result column="dr" property="dr" jdbcType="INTEGER" />
+    <result column="ts" property="ts" jdbcType="TIMESTAMP" />
+    <association column="create_user" property="sysUser" javaType="org.admin.model.SysUser" select="queryBySysUser"/>
+  </resultMap>
+  <resultMap id="SysUserResultMap" type="org.admin.model.SysUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="headimg" property="headimg" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="dr" property="dr" jdbcType="INTEGER" />
+    <result column="ts" property="ts" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="queryBySysUser" parameterType="java.lang.Integer" resultMap="SysUserResultMap">
+    SELECT  *
+    FROM sys_user
+    WHERE id = #{id}
+  </select>
+  <sql id="Base_Column_List" >
+    id, descp, url, lv, create_time, create_user, dr, ts
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from friendlink
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="query" resultMap="BaseResultMap">
+    select *
+    from friendlink
+    where 1=1
+    <if test="dr!=null">
+      AND ifnull(dr,0) = #{dr}
+    </if>
+    order by
+    <if test="field==4">
+      lv
+    </if>
+    <if test="field==3">
+      create_time
+    </if>
+    <if test="field==5">
+      ts
+    </if>
+    <if test="order==1">
+      DESC
+    </if>
+    <if test="order==0">
+      ASC
+    </if>
+    <if test="page!=null and rows!=null">
+      limit #{page},#{rows}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from friendlink
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from friendlink
+    where id IN
+    <foreach collection="ids" item="id" index="" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="org.blog.model.Friendlink" >
+    insert into friendlink (id, descp, url,
+      lv, create_time, create_user, 
+      dr, ts)
+    values (#{id,jdbcType=INTEGER}, #{descp,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
+      #{lv,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, 
+      #{dr,jdbcType=INTEGER}, #{ts,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="add" parameterType="org.blog.model.Friendlink" >
+    insert into friendlink (descp, url,
+      lv, create_time, create_user,
+      dr, ts)
+    values (#{descp,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
+      #{lv,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER},
+      #{dr,jdbcType=INTEGER}, #{ts,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.blog.model.Friendlink" >
+    insert into friendlink
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="descp != null" >
+        descp,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="lv != null" >
+        lv,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="dr != null" >
+        dr,
+      </if>
+      <if test="ts != null" >
+        ts,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="descp != null" >
+        #{descp,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="lv != null" >
+        #{lv,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="dr != null" >
+        #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        #{ts,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.blog.model.Friendlink" >
+    update friendlink
+    <set >
+      <if test="descp != null" >
+        descp = #{descp,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="lv != null" >
+        lv = #{lv,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="dr != null" >
+        dr = #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        ts = #{ts,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.blog.model.Friendlink" >
+    update friendlink
+    set descp = #{descp,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      lv = #{lv,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=INTEGER},
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="update" parameterType="org.blog.model.Friendlink" >
+    update friendlink
+    set descp = #{descp,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      lv = #{lv,jdbcType=INTEGER},
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateDr">
+    update friendlink
+    set
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

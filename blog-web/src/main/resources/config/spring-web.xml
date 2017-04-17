@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context  
+                        http://www.springframework.org/schema/context/spring-context.xsd
+                        http://www.springframework.org/schema/mvc  
+                        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	<!-- 启用注解 -->
+	<mvc:annotation-driven />
+	<!-- 扫描控制器-->
+	<!-- 集成redis-Java注解版 需要添加org.memory.redis-->
+	<context:component-scan base-package="org.blog.controller,org.admin.controller" />
+	<!-- 访问静态文件 -->
+	<mvc:resources mapping="/blog/js/**" location="/blog/js/" />
+	<mvc:resources mapping="/blog/css/**" location="/blog/css/" />
+	<mvc:resources mapping="/blog/images/**" location="/blog/images/" />
+	<mvc:resources mapping="/blog/plugin/**" location="/blog/plugin/" />
+	<mvc:resources mapping="/blog/datas/**" location="/blog/datas/" />
+	<mvc:resources mapping="/blog/menus/**" location="/blog/menus/" />
+	<mvc:resources mapping="/back/**" location="/back/" />
+	<mvc:resources mapping="/back/js/**" location="/back/js/" />
+	<mvc:resources mapping="/back/css/**" location="/back/css/" />
+	<mvc:resources mapping="/back/images/**" location="/back/images/" />
+	<mvc:resources mapping="/back/plugins/**" location="/back/plugins/" />
+	<mvc:resources mapping="/back/datas/**" location="/back/datas/" />
+	<mvc:resources mapping="/back/menus/**" location="/back/menus/" />
+	<mvc:resources mapping="/upload/**" location="/upload/" />
+ 	<!-- 自定义拦截器 -->
+    <mvc:interceptors>
+        <!-- 权限拦截器 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/**"/>
+            <mvc:mapping path="/sysUser/**"/>
+            <mvc:mapping path="/blogs/**"/>
+			<mvc:mapping path="/comments/**"/>
+			<mvc:mapping path="/bloger/**"/>
+			<mvc:mapping path="/friendlink/**"/>
+			<mvc:mapping path="/menu/**"/>
+			<mvc:mapping path="/photos/**"/>
+			<mvc:mapping path="/recommend/**"/>
+			<mvc:mapping path="/song/**"/>
+			<mvc:mapping path="/wisdom/**"/>
+			<mvc:mapping path="/sys/**"/>
+			<!--放行权限-->
+			<mvc:exclude-mapping path="/blogs/index" />
+			<mvc:exclude-mapping path="/blogs/list" />
+			<mvc:exclude-mapping path="/blogs/detail" />
+			<mvc:exclude-mapping path="/blogs/search" />
+			<mvc:exclude-mapping path="/comments/get" />
+			<mvc:exclude-mapping path="/comments/publish" />
+			<mvc:exclude-mapping path="/admin/code" />
+			<mvc:exclude-mapping path="/admin/login" />
+			<mvc:exclude-mapping path="/admin/init_menu" />
+			<mvc:exclude-mapping path="/admin/init_data" />
+			<mvc:exclude-mapping path="/admin/system/info" />
+            <bean class="org.admin.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+	</mvc:interceptors>
+	<!--全局异常处理 -->
+	<bean id="exceptionHandler" class="org.admin.interceptor.MyExceptionHandler"/>
+	<!-- FreeMarker视图解析 -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="cache" value="true" />
+		<property name="prefix" value="" />
+		<property name="suffix" value=".ftl" />
+		<property name="order" value="0"/>
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="requestContextAttribute" value="request" />
+		<property name="exposeSpringMacroHelpers" value="true" />
+		<property name="exposeRequestAttributes" value="true" />
+		<property name="exposeSessionAttributes" value="true" />
+	</bean>
+	<!-- SpringMVC多文件上传  -->
+	<bean id="multipartResolver"  
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8" />
+        <property name="maxUploadSize" value="10485760000" />
+        <property name="maxInMemorySize" value="40960" />  
+    </bean>
+	<!--实例化监听类-->
+	<bean class="org.blog.init.InitComponent" />
+</beans>

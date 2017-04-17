@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>推荐管理</title>
+		<link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../css/global.css" media="all">
+		<link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="../css/table.css" />
+	</head>
+
+	<body>
+		<div class="admin-main">
+			<fieldset class="layui-elem-field">
+				<div class="layui-field-box">
+					<a id="addBtn" href="#" class="layui-btn layui-btn-small">
+						<i class="layui-icon">&#xe61f;</i> 添加
+					</a>
+                    <a id="reclistBtn" href="#" class="layui-btn layui-btn-small">
+						<i class="layui-icon">&#xe600;</i> 推荐
+					</a>
+					<a id="repBtn" href="#" class="layui-btn layui-btn-small">
+						<i class="layui-icon">&#xe64f;</i> 撤销
+					</a>
+					<a id="recBtn" href="#" class="layui-btn layui-btn-small">
+						<i class="layui-icon">&#xe63d;</i> 恢复
+					</a>
+					<a id="delBtn" href="#" class="layui-btn layui-btn-small">
+						<i class="layui-icon">&#xe640;</i> 删除
+					</a>
+				</div>
+			</fieldset>
+			</div>
+			<fieldset class="layui-elem-field">
+				<div class="layui-field-box">
+					<table class="site-table table-hover">
+						<thead>
+							<tr>
+								<th><input type="checkbox" id="selected-all"></th>
+								<th>序号<i class="layui-icon">&#xe625;</i></th>
+								<th>文章标题</th>
+								<th>创建时间<i class="layui-icon">&#xe625;</i></th>
+								<th>创建人</th>
+								<th>更新时间<i class="layui-icon">&#xe625;</i></th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="tbody">
+
+						</tbody>
+					</table>
+				</div>
+			</fieldset>
+			<div class="admin-table-page"><div id="page" class="page" style="text-align: center;background: #fff"></div></div>
+		</div>
+		<script type="text/javascript" src="../plugins/layui/layui.js"></script>
+		<script type="text/javascript" src="../js/managerRecommend.js"></script>
+	</body>
+</html>

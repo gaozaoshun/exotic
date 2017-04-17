@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Table</title>
+		<link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../css/global.css" media="all">
+		<link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="../css/table.css" />
+	</head>
+	<body>
+		<div class="admin-main">
+			<fieldset class="layui-elem-field">
+				<div class="layui-field-box">
+					<a id="addBtn" href="#" class="layui-btn layui-btn-small">
+						<i class="layui-icon">&#xe61f;</i> 添加
+					</a>
+					<a id="editBtn" href="#" class="layui-btn layui-btn-small">
+						<i class="layui-icon">&#xe642;</i> 编辑
+					</a>
+					<a id="delBtn" href="#" class="layui-btn layui-btn-small">
+						<i class="layui-icon">&#xe640;</i> 删除
+					</a>
+					<a id="saveBtn" href="#" class="layui-btn layui-btn-small">
+						<i class="layui-icon" style="margin-left: -13px">&#xe618;</i> 更新
+					</a>
+					<a id="giveBtn" href="#" class="layui-btn layui-btn-small layui-btn-danger">
+						<i class="layui-icon">&#xe61b;</i> 授予权限
+					</a>
+					<a id="titleQ" href="#" class="layui-btn layui-btn-small"  style="float: right">
+						<i class="layui-icon">&#xe615;</i> 搜索
+					</a>
+					<input id="titleInput" type="text" class="layui-input layui-input-inline" style="height: 31px;width: 200px;float: right" placeholder="搜索角色名称">
+				</div>
+			</fieldset>
+			<fieldset class="layui-elem-field">
+				<div class="layui-field-box">
+					<table class="site-table table-hover">
+						<thead>
+							<tr>
+								<th><input type="checkbox" id="selected-all"></th>
+								<th>ID<i class="layui-icon">&#xe625;</i></th>
+								<th>角色名称</th>
+								<th>角色图标</th>
+								<th>角色描述</th>
+								<th>创建时间<i class="layui-icon">&#xe625;</i></th>
+								<th>创建人</th>
+								<th>更新时间<i class="layui-icon">&#xe625;</i></th>
+								<th>启用</th>
+							</tr>
+						</thead>
+						<tbody id="tbody">
+						</tbody>
+					</table>
+				</div>
+			</fieldset>
+			<div class="admin-table-page"><div id="page" class="page" style="text-align: center;background: #fff"></div></div>
+		</div>
+		<script type="text/javascript" src="../plugins/layui/layui.js"></script>
+		<script type="text/javascript" src="../js/managerSysRole.js"></script>
+	</body>
+</html>

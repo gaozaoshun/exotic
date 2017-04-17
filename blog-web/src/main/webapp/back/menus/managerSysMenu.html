@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html style="width: 100%;height: 100%">
+	<head>
+		<meta charset="UTF-8">
+		<title>Table</title>
+		<link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../css/global.css" media="all">
+		<link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="../css/table.css" />
+	</head>
+	<body  style="width: 100%;height: 97%">
+		<div class="admin-main" style="width: 98%;height: 93%">
+			<fieldset class="layui-elem-field">
+				<div class="layui-field-box">
+					<a id="addBtn" href="#" class="layui-btn layui-btn-small">
+						<i class="layui-icon">&#xe61f;</i> 添加
+					</a>
+					<a id="delBtn" href="#" class="layui-btn layui-btn-small">
+						<i class="layui-icon">&#xe640;</i> 删除
+					</a>
+                    <a id="giveBtn" href="#" class="layui-btn layui-btn-small layui-btn-warm">
+						<i class="layui-icon">&#xe61b;</i> 授予权限
+					</a>
+				</div>
+			</fieldset>
+			<fieldset class="layui-elem-field"  style="background:#f7f7f7;float:left;width: 30%;height: 90%;overflow: auto">
+				<div class="layui-field-box" id="tree">
+				</div>
+			</fieldset>
+			<fieldset class="layui-elem-field"  style="background:#f7f7f7;float:left;width: 68.4%;height: 90%;overflow: auto;margin-left: 8px">
+				<div class="layui-field-box">
+                    <div class="layui-form" style="margin-right: 50px;">
+                        <div class="layui-form-item">
+                        <label class="layui-form-label">菜单名称</label>
+                        <div class="layui-input-block">
+                            <input name="name" type="text" class="layui-input" placeholder="菜单名称">
+                            <input name="id" type="hidden">
+                        </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">菜单图标</label>
+                            <div class="layui-input-inline" style="width: 74.5%;margin-right: 0;">
+                                <input name="icon" type="text" class="layui-input" placeholder="菜单图标" disabled>
+                            </div>
+                            <div class="layui-input-inline" style="width: 5%;margin-right: 0;">
+                                <button class="layui-btn" id="menuIcon">选择</button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">菜单URL</label>
+                            <div class="layui-input-block">
+                                <input name="url" type="text" class="layui-input" placeholder="菜单URL">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">菜单描述</label>
+                            <div class="layui-input-block">
+                                <textarea name="descp" class="layui-textarea" placeholder="菜单描述"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">父菜单</label>
+                            <div class="layui-input-block">
+                                <select name="superMenu" lay-verify="required">
+                                    <option value="">请选择父菜单</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">创建时间</label>
+                            <div class="layui-input-block">
+                                <input name="createTime" type="text" class="layui-input" placeholder="创建时间" disabled>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">创建人</label>
+                            <div class="layui-input-block">
+                                <input name="createUser" type="text" class="layui-input" placeholder="创建人" disabled>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">更新时间</label>
+                            <div class="layui-input-block">
+                                <input name="ts" type="text" class="layui-input" placeholder="更新时间" disabled>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">启用</label>
+                            <div class="layui-input-inline" style="width: 30px">
+                                <input type="checkbox" name="dr" lay-skin="switch" lay-filter="dr">
+                            </div>
+                        </div>
+                        <div style="text-align: center;margin-bottom: 10px">
+                            <button id="save"  class="layui-btn layui-btn-danger">保存</button>
+                            <button id="reset"  class="layui-btn layui-btn-danger">重置</button>
+                        </div>
+                    </div>
+                </div>
+			</fieldset>
+		</div>
+		<script type="text/javascript" src="../plugins/layui/layui.js"></script>
+		<script type="text/javascript" src="../js/managerSysMenu.js"></script>
+	</body>
+</html>

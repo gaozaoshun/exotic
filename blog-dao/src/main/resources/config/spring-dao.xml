@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+  
+  <!-- 引入jdbc.properties -->
+  <context:property-placeholder location="classpath:config/jdbc.properties" ignore-unresolvable="true"/>
+  <!-- 配置druid数据源 -->
+  <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+        init-method="init" destroy-method="close">
+    <!-- 基本属性 -->
+    <property name="driverClassName" value="${jdbc.driver}" />
+    <property name="url" value="${jdbc.url}" />
+    <property name="username" value="${jdbc.username}" />
+    <property name="password" value="${jdbc.password}" />
+    <!-- 初始连接数 -->
+    <property name="initialSize" value="${druid.initialSize}" />
+    <!-- 连接最大数量 -->
+    <property name="maxActive" value="${druid.maxActive}" />
+    <!-- 连接最小空闲 -->
+    <property name="minIdle" value="${druid.minIdle}" />
+    <!-- 连接最长等待时间 -->
+    <property name="maxWait" value="${druid.maxWait}" />
+    <!-- 超时回收连接 -->
+    <property name="removeAbandoned" value="${druid.removeAbandoned}" />
+    <!-- 超过时间限制多长 -->
+    <property name="removeAbandonedTimeout" value="${druid.removeAbandonedTimeout}" />
+    <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+    <property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}" />
+    <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+    <property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}" />
+    <!-- 用来检测连接是否有效的sql，要求是一个查询语句-->
+    <property name="validationQuery" value="${druid.validationQuery}" />
+    <!-- 申请连接的时候检测 -->
+    <property name="testWhileIdle" value="${druid.testWhileIdle}" />
+    <!-- 申请连接时执行validationQuery检测连接是否有效，配置为true会降低性能 -->
+    <property name="testOnBorrow" value="${druid.testOnBorrow}" />
+    <!-- 归还连接时执行validationQuery检测连接是否有效，配置为true会降低性能  -->
+    <property name="testOnReturn" value="${druid.testOnReturn}" />
+    <!-- 打开PreparedStatementCache,sql里用？占位，等待被替换 -->
+    <property name="poolPreparedStatements" value="${druid.poolPreparedStatements}" />    
+    <!-- 指定每个连接上PSCache的大小  -->
+    <property name="maxPoolPreparedStatementPerConnectionSize" value="${druid.maxPoolPreparedStatementPerConnectionSize}" />
+    <!-- 监控数据库 -->
+    <!--	 
+    		属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：                
+             监控统计用的filter:stat
+            日志用的filter:log4j
+          	 防御SQL注入的filter:wall 
+    -->
+    <property name="filters" value="${druid.filters}" />  
+  </bean>
+
+  <!-- 根据配置创建SqlSessionFactory -->
+  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <!--引入数据源--><!--指定数据库-->
+    <property name="dataSource" ref="dataSource" />
+    <!--Mybatis全局配置--><!--指定MyBatis是怎么加载实体的-->
+    <property name="configLocation" value="classpath:config/mybatis-config.xml"/>
+    <!--扫描指定Mapper文件--><!--指定执行的SQL语句-->
+    <property name="mapperLocations" value="classpath:mapper/*.xml" />
+  </bean>
+  <!--实例化实现Dao接口的实现类并自动注入到Spring容器-->
+  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <property name="basePackage" value="org.blog.dao,org.admin.dao" />
+    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+  </bean>
+  <!-- 声明式事务管理 -->
+  <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    	<property name="dataSource" ref="dataSource" />
+  </bean>
+</beans>

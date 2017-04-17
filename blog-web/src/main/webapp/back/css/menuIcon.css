@@ -1,0 +1,29 @@
+*{font-size: 30px}
+.menu-icon-ul{
+    list-style: none;
+    padding-left: 20px;
+}
+.menu-icon-ul>li{
+    position: relative;
+    width: 85px;
+    height: 85px;
+    padding: 15px;
+    float: left ;
+    text-align: center;
+    line-height: 85px;
+}
+.menu-icon-ul>li:hover{
+    background: #f7f7f7;
+    cursor: pointer;
+}
+.menu-icon-ul>li>i{
+    font-size: 30px;
+}
+.name{
+    font-size: 16px;
+    position: absolute;
+    width: 85px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+}

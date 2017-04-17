@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑用户管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" href="../css/global.css" media="all">
+    <link rel="stylesheet" href="../css/managerPhoto.css" media="all">
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+</head>
+<body>
+        <div style="padding-top: 20px;padding-bottom: 20px;padding-right: 50px">
+            <form class="layui-form" action="" >
+                <input type="hidden" name="id">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户头像</label>
+                    <div class="site-demo-upload" style="left: 110px">
+                        <img id="preview" src="../../upload/default.jpg" style="border-radius:0">
+                        <input type="hidden" name="headimg" value="/upload/default.jpg">
+                        <div class="site-demo-upbar">
+                            <input type="file" name="images" class="layui-upload-file" id="images">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="username" required lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密码</label>
+                    <div class="layui-input-inline">
+                        <input type="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">昵称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="nickname" required lay-verify="required" placeholder="昵称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-inline">
+                        <input type="number" name="state" required lay-verify="required" placeholder="状态" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户类型</label>
+                    <div class="layui-input-inline">
+                        <input type="number" name="type" required lay-verify="required" placeholder="用户类型" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">启用</label>
+                    <div class="layui-input-block" id="dr">
+                        <input type="checkbox" name="dr" lay-skin="switch">
+                    </div>
+                </div>
+            </form>
+            <div class="layui-input-block">
+                <button class="layui-btn" id="yes">确定</button>
+            </div>
+        </div>
+    <script src="../plugins/layui/layui.js"></script>
+    <script src="../js/modifySysUser.js"></script>
+</body>
+</html>
